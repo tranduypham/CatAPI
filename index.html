@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cat API</title>
+</head>
+<!-- https://docs.thecatapi.com/ -->
+<!-- https://github.com/buinguyenhoangtho/cat/blob/master/index.html -->
+
+<body>
+    <script src="https://code.jquery.com/jquery-3.5.1.js"
+        integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.1/umd/popper.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.3/js/bootstrap.min.js"></script>
+    <script src="https://unpkg.com/typewriter-effect@latest/dist/core.js"></script>
+    <script>
+        var typewriter = new Typewriter(content, {
+            loop: true,
+            delay: 75,
+        });
+
+        typewriter
+            .pauseFor(300)
+            .typeString('Cat Generator Images ')
+            .pauseFor(300)
+            .deleteChars(10)
+
+            .pauseFor(1000)
+            .start();
+    </script>
+    <button class="generate"> Generate </button>
+    <div class="cat"></div>
+</body>
+<script>
+    var img = document.querySelector(".cat");
+
+    var button = document.querySelector("button");
+
+    function loadCatImgAPI() {
+        var xhttp = new XMLHttpRequest();
+
+        // Nguyên cái đoạn onreadystagechange này nó lấy Response về
+        // If này không hiểu lắm
+        // https://www.w3schools.com/js/js_ajax_http_send.asp
+        xhttp.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                var Response = this.responseText;//Kết quả trả về ở dạng JSON
+                Response = JSON.parse(Response);//Chuyển thành dạng Object
+                console.log(Response[0]["url"]);//Vị trí file ảnh
+                img.innerHTML = "<img src='" + Response[0]["url"] + "'>";
+            }
+        };
+        xhttp.open("GET", "https://api.thecatapi.com/v1/images/search", true);
+        xhttp.send();
+        // console.log((xhttp["url"]));
+        // setTimeout(loadCatImgAPI, 1000);
+
+    }
+
+    button.addEventListener("click", function () {
+        
+            loadCatImgAPI();
+            // setTimeout(loadCatImgAPI, 1000);
+        
+    });
+
+
+
+
+</script>
+
+</html>
